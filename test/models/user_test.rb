@@ -9,20 +9,35 @@ class UserTest < ActiveSupport::TestCase
     assert @user.valid?
   end
   
-  test 'Username should not be blank' do
-    @user.name = '  '
+  test 'Use.username should not be blank' do
+    @user.username = '  '
     
     assert_not @user.valid?
   end
   
-  test 'Username should not be too long' do # No longer than 40 characters
-    @user.name = 'kitty' * 8
+  test 'Use.username should not be too long' do # No longer than 40 characters
+    @user.username = 'kitty' * 8
     
     assert @user.valid?
     
-    @user.name += 'a'
+    @user.username += 'a'
     
     assert_not @user.valid?
+  end
+  
+  test 'Use.usernames and emails should be unique' do
+    dup_user = @user.dup
+    
+    @user.save
+    
+    assert_not dup_user.valid?
+  end
+  
+  test 'Use.usernames should not be case sensitive' do
+    dup_user = @user.dup
+    
+    dup_user.email += '.uk' # Stops email unique rule interfearing with test
+    dup_user.username.upcase!
   end
   
   test 'Email should not be blank' do
