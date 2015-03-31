@@ -36,6 +36,8 @@ class UserTest < ActiveSupport::TestCase
   test 'Usernames should not be case sensitive' do
     dup_user = @user.dup
     
+    @user.save
+    
     dup_user.username.upcase!
     
     assert_not dup_user.valid?, "Usernames '#{@user.username}' and '#{dup_user.username}' were not treated as the same"
