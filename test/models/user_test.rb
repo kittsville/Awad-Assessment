@@ -36,7 +36,6 @@ class UserTest < ActiveSupport::TestCase
   test 'Usernames should not be case sensitive' do
     dup_user = @user.dup
     
-    dup_user.email += '.uk' # Stops email unique rule interfearing with test
     dup_user.username.upcase!
     
     assert_not dup_user.valid?, "Usernames '#{@user.username}' and '#{dup_user.username}' were not treated as the same"
