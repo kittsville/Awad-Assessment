@@ -25,7 +25,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?, "Allowed username of length #{@user.username.length}"
   end
   
-  test 'Usernames and emails should be unique' do
+  test 'Usernames should be unique' do
     dup_user = @user.dup
     
     @user.save
