@@ -38,6 +38,8 @@ class UserTest < ActiveSupport::TestCase
     
     dup_user.email += '.uk' # Stops email unique rule interfearing with test
     dup_user.username.upcase!
+    
+    assert_not dup_user.valid?, "Usernames '#{@user.username}' and '#{dup_user.username}' were created as the same"
   end
   
   test 'Email should not be blank' do
