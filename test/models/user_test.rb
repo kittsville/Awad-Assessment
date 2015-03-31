@@ -65,6 +65,7 @@ class UserTest < ActiveSupport::TestCase
       @user.email = email
       
       assert @user.valid?
+    end
   end
   
   test 'Email should not allow invalid email addresses' do
@@ -78,5 +79,6 @@ class UserTest < ActiveSupport::TestCase
       @user.email = email
       
       assert_not @user.valid?
+    end
   end
 end
