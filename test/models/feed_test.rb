@@ -38,17 +38,17 @@ class FeedTest < ActiveSupport::TestCase
     
     assert @feed.valid?, "Feed description with length #{@feed.description.length} rejected"
     
-    @feed.title += 'a'
+    @feed.description += 'a'
     
     assert_not @feed.valid?, "Feed description with length #{@feed.description.length} allowed"
   end
 
   test 'Feed URL should not be longer than 255 characters' do
-    @feed.title = 'a' * 255
+    @feed.url = 'a' * 255
     
     assert @feed.valid?, "Feed URL with length #{@feed.url.length} rejected"
     
-    @feed.title += 'a'
+    @feed.url += 'a'
     
     assert_not @feed.valid?, "Feed URL with length #{@feed.url.length} allowed"
   end
