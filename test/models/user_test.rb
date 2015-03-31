@@ -6,34 +6,34 @@ class UserTest < ActiveSupport::TestCase
   end
   
   test 'Should be a valid user' do
-    assert @user.valid?
+    assert @user.valid?, "User with username #{@user.username} and email #{@user.email} failed"
   end
   
-  test 'Use.username should not be blank' do
+  test 'Username should not be blank' do
     @user.username = '  '
     
-    assert_not @user.valid?
+    assert_not @user.valid?, "Allowed user with blank username '#{@user.username}'"
   end
   
-  test 'Use.username should not be too long' do # No longer than 40 characters
+  test 'Username should not be too long' do # No longer than 40 characters
     @user.username = 'kitty' * 8
     
-    assert @user.valid?
+    assert @user.valid?, "Didn't allow username of length #{@user.username.length}"
     
     @user.username += 'a'
     
-    assert_not @user.valid?
+    assert_not @user.valid?, "Allowed username of length #{@user.username.length}"
   end
   
-  test 'Use.usernames and emails should be unique' do
+  test 'Usernames and emails should be unique' do
     dup_user = @user.dup
     
     @user.save
     
-    assert_not dup_user.valid?
+    assert_not dup_user.valid?, "Allowed duplicate users to exist"
   end
   
-  test 'Use.usernames should not be case sensitive' do
+  test 'Usernames should not be case sensitive' do
     dup_user = @user.dup
     
     dup_user.email += '.uk' # Stops email unique rule interfearing with test
@@ -43,17 +43,17 @@ class UserTest < ActiveSupport::TestCase
   test 'Email should not be blank' do
     @user.email = '  '
     
-    assert_not @user.valid?
+    assert_not @user.valid?, "Allowed user with blank email '#{@user.email}'"
   end
   
   test 'Email should not be too long' do
     @user.email = 'kitty' * 49 + '@derpy.uk'
     
-    assert @user.valid?
+    assert @user.valid?, "Didn't allow valid email of length #{@user.email.length}"
     
     @user.email += '.ohno.whyfail'
     
-    assert_not @user.valid?
+    assert_not @user.valid?, "Allowed invalid email of length #{@user.email.length}"
   end
   
   test 'Email should allow valid email addresses' do
@@ -64,7 +64,7 @@ class UserTest < ActiveSupport::TestCase
     ].each do |email|
       @user.email = email
       
-      assert @user.valid?
+      assert @user.valid?, "Valid email address '#{@user.email}' was not allowed"
     end
   end
   
@@ -78,7 +78,7 @@ class UserTest < ActiveSupport::TestCase
     ].each do |email|
       @user.email = email
       
-      assert_not @user.valid?
+      assert_not @user.valid?, "Invalid email address '#{@user.email}' was allowed"
     end
   end
 end
