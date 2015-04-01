@@ -1,4 +1,9 @@
 class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+  
   # Forces username/email to be lower-case before addition to the database
   def downcase_details
     self.username	= self.username.downcase	if self.username.present?
