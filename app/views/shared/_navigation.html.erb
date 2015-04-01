@@ -5,5 +5,14 @@
 			<a class="navbar-brand" href="/">FeedNet</a>
 			<p class="navbar-text navbar-left">A feed subscription service</p>
 		</div>
+		<div class="collapse navbar-collapse">
+       			<p class="navbar-text navbar-right">
+				<% if user_signed_in? %>
+				<%= current_user.username %>
+				<% else %>
+				Sign In
+				<% end %>
+			</p>
+		</div>
 	</div>
 </nav>
