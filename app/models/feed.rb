@@ -1,9 +1,15 @@
 class Feed < ActiveRecord::Base
   def downcase_url
     self.url = self.url.downcase if self.url.present?
+    true
   end
   
-  before_validation :downcase_url
+  def default_values
+    self.blacklisted = false if self.blacklisted.nil?
+    true
+  end
+  
+  before_validation :downcase_url, :default_values
   
   validates :title, presence: true, length: { maximum: 150 }
   validates :description, presence: true, length: { maximum: 1000 }
