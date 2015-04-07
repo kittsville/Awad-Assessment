@@ -1,4 +1,6 @@
 class Feed < ActiveRecord::Base
+  has_many :subscriptions
+  
   def downcase_url
     self.url = self.url.downcase if self.url.present?
     true
@@ -7,7 +9,7 @@ class Feed < ActiveRecord::Base
   def default_values
     self.blacklisted = false if self.blacklisted.nil?
     true
-  end
+  end 
   
   before_validation :downcase_url, :default_values
   
