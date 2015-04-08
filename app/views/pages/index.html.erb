@@ -1,6 +1,8 @@
-<h2>Popular Feeds</h2>
-<div class="feed-bin">
-</div>
-<p class="disclaimer">
-FeedNet claims no responsibility for the contents of external feeds
-</p>
+<% if user_signed_in? %>
+	<h2>Your Feeds</h2>
+<% else %>
+	<h2>Popular Feeds</h2>
+<% end %>
+<div class="feed-bin"></div>
+<p class="disclaimer">FeedNet claims no responsibility for the contents of external feeds</p>
+
