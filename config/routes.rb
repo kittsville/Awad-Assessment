@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   root to: 'pages#index'
+  get '/browse' => 'feed#index'
+  get '/add_feed' => 'feed#new'
   
   # Only allows AJAX requests for a specific route
   class OnlyAjaxRequests

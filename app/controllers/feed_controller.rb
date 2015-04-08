@@ -10,4 +10,16 @@ class FeedController < ApplicationController
     
     render json: @feeds
   end
+
+  # Gets all site feeds for user to browse
+  def index
+  end
+  
+  # Displays form to add a new feed
+  def new
+  end
+  
+  # Adds a new feed to the site's listing
+  def create
+  end
 end
