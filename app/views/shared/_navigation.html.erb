@@ -5,5 +5,14 @@
 			<a class="navbar-brand" href="/">FeedNet</a>
 			<p class="navbar-text navbar-left">A feed subscription service</p>
 		</div>
+		<div class="collapse navbar-collapse">
+       			<p class="navbar-text navbar-right">
+				<% if user_signed_in? %>
+				<%= current_user.username %> | <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
+				<% else %>
+				<%= link_to('Login', new_user_session_path) %> | <%= link_to('Register', new_user_registration_path) %>
+				<% end %>
+			</p>
+		</div>
 	</div>
 </nav>

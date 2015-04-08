@@ -1,1 +1,12 @@
-<h1>Placeholder</h1>
+<% if user_signed_in? %>
+	<h2>Your Feeds</h2>
+<% else %>
+	<h2>Popular Feeds</h2>
+<% end %>
+<div class="feed-bin"></div>
+<p class="disclaimer">FeedNet claims no responsibility for the contents of external feeds</p>
+<script type="text/javascript">
+$(function() {
+	fEngine = new feedEngine();
+});
+</script>

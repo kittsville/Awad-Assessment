@@ -7,12 +7,13 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<% render 'shared/navigation' %>
+<%= render 'shared/navigation' %>
 <div class="container">
 	<p class="notice"><%= notice %></p>
 	<p class="alert"><%= alert %></p>	
 	<%= yield %>
 </div>
-
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("feeds", "1");</script>
 </body>
 </html>
