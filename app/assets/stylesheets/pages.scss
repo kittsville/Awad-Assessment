@@ -5,3 +5,22 @@ div.feed-bin {
 		}
 	}
 }
+
+div.devise-panel {
+	max-width: 300px;
+	min-width: 250px;
+	margin: auto;
+	
+	div.input-group > input {
+		margin-bottom: 10px;
+	}
+	
+	form ~ div.after-links > * {
+		float: right;
+		clear: both;
+	}
+	
+	form ~ div.after-links {
+		margin-top: -2em;
+	}
+}
