@@ -14,7 +14,6 @@ class Feed < ActiveRecord::Base
   before_validation :downcase_url, :default_values
   
   validates :title, presence: true, length: { maximum: 150 }
-  validates :description, presence: true, length: { maximum: 1000 }
   validates :url, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 255 }
 
   private :downcase_url

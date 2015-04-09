@@ -21,5 +21,22 @@ class FeedController < ApplicationController
   
   # Adds a new feed to the site's listing
   def create
+    if !user_signed_in?
+      return
+    end
+
+    feed = Feed.create(url: params['feed_url'], title: params['feed_title'])
+
+    if !feed.valid?
+      redirect_to root_path
+    end
+
+    feed.save
+
+    subscription = Subscription.create!(user_id: current_user.id, feed_id: feed.id)
+
+    puts "Created Feed #{feed.id} and subscription #{subscription.id}"
+
+    redirect_to root_path
   end
 end

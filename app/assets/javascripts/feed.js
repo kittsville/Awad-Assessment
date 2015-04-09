@@ -26,9 +26,16 @@ function newFeedForm() {
 			} else {
 				validate.hide(200);
 				$('div.field').hide(200);
-			console.log(feedValidating);	
+
 				submit.show(200);
+				console.log(data.feed);
 				$('<h3/>',{html:data.feed.title}).insertAfter(feedValidating);
+
+				form.append($('<input/>',{
+					'type'	: 'hidden',
+					'name'	: 'feed_title',
+					'value'	: data.feed.title
+				}));
 			}
 		});
 	});

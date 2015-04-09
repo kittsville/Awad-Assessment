@@ -16,7 +16,7 @@
     <%= form_tag("/create_feed", method: "post") do %>
       <div class="field input-group">
         <%= label :feed, :url %><br />
-        <%= text_field :feed_url, autofocus: true, class: "form-control", autocomplete: "off" %>
+        <%= text_field_tag :feed_url, '', autofocus: true, class: "form-control", autocomplete: "off" %>
       </div>
 
       <div class="actions">
