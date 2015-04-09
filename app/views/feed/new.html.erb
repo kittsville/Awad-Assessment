@@ -13,7 +13,7 @@
       <span class="sr-only">Processing:</span>
       Validating Feed
     </div>
-    <%= form_tag("/create_feed", method: "get") do %>
+    <%= form_tag("/create_feed", method: "post") do %>
       <div class="field input-group">
         <%= label :feed, :url %><br />
         <%= text_field :feed_url, autofocus: true, class: "form-control", autocomplete: "off" %>
