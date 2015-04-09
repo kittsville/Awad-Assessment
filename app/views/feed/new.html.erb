@@ -3,6 +3,16 @@
     <h3 class="panel-title">Add a Feed</h3>
   </div>
   <div class="panel-body">
+    <div id="feed-error" class="alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+      Invalid Feed URL
+    </div>
+    <div id="feed-processing" class="alert alert-info" role="alert">
+      <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+      <span class="sr-only">Processing:</span>
+      Validating Feed
+    </div>
     <%= form_tag("/create_feed", method: "get") do %>
       <div class="field input-group">
         <%= label :feed, :url %><br />
@@ -10,14 +20,17 @@
       </div>
 
       <div class="actions">
-        <%= button_tag :validate, class: "btn btn-primary" %>
+        <%= button_tag :validate, class: "btn btn-primary", type: "button", id: "validate_feed" %>
       </div>
 
       <div class="actions">
-        <%= submit_tag :submit, class: "btn btn-primary" %>
+        <%= submit_tag :submit, class: "btn btn-success" %>
       </div>
     <% end %>
   </div>
 </div>
 <script type="text/javascript">
+$(function() {
+	new newFeedForm();
+});
 </script>
