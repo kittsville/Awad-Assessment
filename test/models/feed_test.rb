@@ -2,19 +2,13 @@ require 'test_helper'
 
 class FeedTest < ActiveSupport::TestCase
   def setup
-    @feed = Feed.new(title: 'Nerdverse Events', description: "Upcoming events of Aberdeen Uni's Sci Fi & Fantasy Society", url: 'http://nerdverse.co.uk/events/feed/', blacklisted: false)
+    @feed = Feed.new(title: 'Nerdverse Events', url: 'http://nerdverse.co.uk/events/feed/', blacklisted: false)
   end
   
   test 'Feed title should not be blank' do
     @feed.title = '   '
     
     assert_not @feed.valid?, 'Feed with blank title was allowed'
-  end
-  
-  test 'Feed description should not be blank' do
-    @feed.description = '   '
-    
-    assert_not @feed.valid?, 'Feed with blank description was allowed'
   end
   
   test 'Feed URL should not be blank' do
@@ -31,16 +25,6 @@ class FeedTest < ActiveSupport::TestCase
     @feed.title += 'a'
     
     assert_not @feed.valid?, "Feed title with length #{@feed.title.length} allowed"
-  end
-
-  test 'Feed description should not be longer than 1000 characters' do
-    @feed.description = 'a' * 1000
-    
-    assert @feed.valid?, "Feed description with length #{@feed.description.length} rejected"
-    
-    @feed.description += 'a'
-    
-    assert_not @feed.valid?, "Feed description with length #{@feed.description.length} allowed"
   end
 
   test 'Feed URL should not be longer than 255 characters' do
