@@ -71,13 +71,14 @@ function feed(feedObj, parentElement) {
 	gFeed.load(renderPosts);
 }
 
-function feedEngine() {
+function feedEngine(requestType) {
 	feeds		= []
 		
 	$.ajax({
 		type	: 'GET',
 		url	: '/feeds.json',
-		dataType: 'json'
+		dataType: 'json',
+		data	: {type : requestType}
 	}).success(function(data){
 		parentElement	= $('div.feed-bin');
 		

@@ -3,7 +3,11 @@ class FeedController < ApplicationController
   # Fetches all of the logged in user's subscriptions or (if not logged in) 10 feeds
   def get_feeds
     if user_signed_in?
-      @feeds = Feed.joins(:subscriptions).where(:subscriptions => { user_id: current_user.id }).all
+      if params['type'] == 'index'
+        @feeds = Feed.joins(:subscriptions).where(:subscriptions => { user_id: current_user.id }).all
+      elsif params['type'] == 'browse'
+        @feeds = Feed.limit(20)
+      end
     else
       @feeds = Feed.limit(10)
     end
@@ -11,7 +15,7 @@ class FeedController < ApplicationController
     render json: @feeds
   end
 
-  # Gets all site feeds for user to browse
+  # Gets all site feeds that the current user isn't subscribed to for user to browse
   def index
   end
   
