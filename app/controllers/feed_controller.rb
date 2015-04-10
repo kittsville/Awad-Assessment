@@ -12,32 +12,18 @@ class FeedController < ApplicationController
       @feeds = Feed.limit(10)
     end
     
-    # Initilises output to be returned
-    @feed_full = []
+    @feeds_full = filter_feeds(@feeds)
     
-    # Initilises feed subscribed
-    subscribed = nil
+    render json: [user_signed_in?,  @feeds_full, (user_signed_in? and current_user.admin == 1)]
+  end
+  
+  # Matches a string to all listed (and not blacklisted) feeds. Unless user is an admin
+  def search_feeds
+    feeds = Feed.where('title ~* ?', params['feed_title'].downcase) # parameterized for safety
     
-    @feeds.each do |feed|
-      # Stops non-admins seeing blacklisted feeds
-      if feed.blacklisted
-        if user_signed_in? and current_user.admin == 1
-          blacklisted = true
-        else
-          next
-        end
-      else
-          blacklisted = false
-      end
-      
-      if user_signed_in?
-        subscribed = Subscription.where({user_id: current_user.id, feed_id: feed.id}).first.present?
-      end
-      
-      @feed_full.push([subscribed, feed, blacklisted])
-    end
+    feeds = filter_feeds(feeds)
     
-    render json: [user_signed_in?,  @feed_full, (user_signed_in? and current_user.admin == 1)]
+    render json: feeds
   end
   
   # Blacklists or unblacklists a feed
@@ -100,5 +86,35 @@ class FeedController < ApplicationController
     puts "Created Feed #{feed.id} and subscription #{subscription.id}"
 
     redirect_to root_path
+  end
+  
+  # Filters feeds, marking subscribed/blacklisted feeds and hiding blacklisted feeds from non-admin users
+  def filter_feeds(feeds)
+    # Initilises output to be returned
+    feed_full = []
+    
+    # Initilises feed subscribed
+    subscribed = nil
+    
+    feeds.each do |feed|
+      # Stops non-admins seeing blacklisted feeds
+      if feed.blacklisted
+        if user_signed_in? and current_user.admin == 1
+          blacklisted = true
+        else
+          next
+        end
+      else
+          blacklisted = false
+      end
+      
+      if user_signed_in?
+        subscribed = Subscription.where({user_id: current_user.id, feed_id: feed.id}).first.present?
+      end
+      
+      feed_full.push([subscribed, feed, blacklisted])
+    end
+    
+    return feed_full
   end
 end

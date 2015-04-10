@@ -35,6 +35,19 @@ div.feed-bin {
   }
 }
 
+@media (min-width: 768px) {
+  div.collapse.navbar-collapse {
+    margin: -50px;
+  }
+}
+
+@media (max-width: 767px) {
+  div.navbar-right {
+    float: right;
+    margin-top: -50px;
+  }
+}
+
 div.devise-panel {
 	max-width: 300px;
 	min-width: 250px;

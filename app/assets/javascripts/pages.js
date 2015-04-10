@@ -228,3 +228,26 @@ function strip(html) {
    tmp.innerHTML = html;
    return tmp.textContent || tmp.innerText || "";
 }
+
+$(function() {
+  $('form#search-feeds').on('submit', function(e){
+    $.ajax({
+      type	: 'POST',
+      url	: '/search_feeds',
+      dataType: 'json',
+      data	: {feed_title : $('input#search_feeds').val()}
+    }).success(function(data){
+      parentElement	= $('div.feed-bin');
+      parentElement.html('');
+      if (data.length == 0) {
+        parentElement.html('<p>No Feeds Found</p>');
+      } else {
+        data.forEach(function(feedObj, i){
+          new feed(feedObj, parentElement)
+        });
+      }
+    });
+
+    e.preventDefault();
+  });
+});
