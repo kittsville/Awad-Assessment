@@ -4,6 +4,9 @@ function feed(feedObj, parentElement) {
 	var anchor     = parentElement;
 	var gFeed      = new google.feeds.Feed(rawFeed.url);
   
+  console.log(subscribed);
+  console.log(rawFeed.title);
+  
 	var feedElement = $('<div/>',{
 		'class'	: 'panel panel-default single-feed',
 		'id'	: 'feed-'+rawFeed.id,
@@ -46,6 +49,37 @@ function feed(feedObj, parentElement) {
   
   var subscribeIcon    = feedElement.find('span.subscribe-icon');
   var unsubscribeIcon  =  feedElement.find('span.unsubscribe-icon');
+  
+  // Subscribes/unsubscribes user to/from feed when a subscription modifying button is clicked
+  feedElement.on('click','div.sub-icons span', function(e){
+    var subAction = '';
+    
+    if ($(e.target).hasClass('subscribe-icon')) {
+      subAction = 'sub';
+    } else {
+      subAction = 'unsub';
+    }
+    
+    $.ajax({
+      type     : 'POST',
+      url      : '/modify_subscriptions',
+      dataType : 'json',
+      data     : {
+        feed_id  : rawFeed.id,
+        change   : subAction
+      }
+    }).success(function(data){
+      if ( data ) {
+        // Toggles subscription state of feed
+        subscribed = !subscribed;
+        
+        changeDisplayedIcon();
+      } else {
+        alert('Already subscribed/unsubscribed from feed');
+      }
+    });
+  });
+  
 	
 	var body = feedElement.find('div.panel-body');
   
@@ -100,6 +134,8 @@ function feed(feedObj, parentElement) {
 		
 		body.html(posts);
 	}
+  
+  
 	
   changeDisplayedIcon();
 	gFeed.load(renderPosts);

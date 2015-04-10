@@ -17,7 +17,7 @@ class FeedController < ApplicationController
     
     if user_signed_in?
       @feeds.each do |feed|
-        if Subscription.where({user_id: current_user.id, feed_id: feed.id})
+        if Subscription.where({user_id: current_user.id, feed_id: feed.id}).first.present?
           @feed_full.push([true, feed])
         else
          @feed_full.push([false, feed])
