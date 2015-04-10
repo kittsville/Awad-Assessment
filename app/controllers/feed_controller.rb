@@ -12,7 +12,22 @@ class FeedController < ApplicationController
       @feeds = Feed.limit(10)
     end
     
-    render json: @feeds
+    # Initilises output to be returned
+    @feed_full = []
+    
+    if user_signed_in?
+      @feeds.each do |feed|
+        if Subscription.where({user_id: current_user.id, feed_id: feed.id}).first.present?
+          @feed_full.push([true, feed])
+        else
+         @feed_full.push([false, feed])
+        end
+      end
+    else
+      @feeds.each{|feed| @feed_full.append([nil, feed])}
+    end
+    
+    render json: [user_signed_in?,  @feed_full]
   end
 
   # Gets all site feeds that the current user isn't subscribed to for user to browse

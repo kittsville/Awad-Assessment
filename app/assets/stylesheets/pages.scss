@@ -3,6 +3,30 @@ div.feed-bin {
 		div.feed-post:not(:last-of-type) {
 			border-bottom: solid 1px #DDD;
 		}
+    
+    div.panel-heading {
+      h3.panel-title {
+        float: left;
+      }
+      
+      div.sub-icons {
+        float: right;
+      }
+      
+      span {
+        border-radius: 4px;
+        padding: 3px;
+        margin: -2px;
+        background-color: #D5D5D5;
+        cursor: pointer;
+      }
+      
+      span:active {
+        background-color: #A8A8A8;
+      }
+      
+      height: 2.5em;
+    }
 	}
 }
 
