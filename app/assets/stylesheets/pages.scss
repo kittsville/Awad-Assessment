@@ -3,6 +3,18 @@ div.feed-bin {
 		div.feed-post:not(:last-of-type) {
 			border-bottom: solid 1px #DDD;
 		}
+    
+    div.panel-heading {
+      h3.panel-title {
+        float: left;
+      }
+      
+      div.sub-icons {
+        float: right;
+      }
+      
+      height: 2.5em;
+    }
 	}
 }
 
