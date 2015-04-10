@@ -229,7 +229,15 @@ function strip(html) {
    return tmp.textContent || tmp.innerText || "";
 }
 
+// Searches for feeds dynamically
 $(function() {
+  $(window).keydown(function(event){
+    if(event.keyCode == 13 && $('input#search_feeds').is(':focus')) {
+      $('form#search-feeds').submit();
+    }
+  });
+  
+  
   $('form#search-feeds').on('submit', function(e){
     $.ajax({
       type	: 'POST',
