@@ -32,7 +32,7 @@ function feed(feedObj, parentElement) {
 	
 	function renderPosts(data){
 		posts = [];
-		console.log(body);
+		
 		data.feed.entries.forEach(function(post,p){
 			postTitle = $('<h4/>',{html:post.title});
 			
