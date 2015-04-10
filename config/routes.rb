@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   
   match '/feeds.json'            => 'feed#get_feeds', :constraints => OnlyAjaxRequests.new, via: :get, defaults: {format: 'json'}
   match '/modify_subscriptions'  => 'subscription#change', :constraints => OnlyAjaxRequests.new, via: :post, defaults: {format: 'json'}
+  match '/modify_blacklisted'    => 'feed#blacklist', :constraints => OnlyAjaxRequests.new, via: :post, defaults: {format: 'json'}
   
   # Makes login/logout routes cleaner
   devise_for :users, :skip => [:sessions]

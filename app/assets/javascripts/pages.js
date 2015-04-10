@@ -3,9 +3,7 @@ function feed(feedObj, parentElement) {
   var subscribed = feedObj[0];
 	var anchor     = parentElement;
 	var gFeed      = new google.feeds.Feed(rawFeed.url);
-  
-  console.log(subscribed);
-  console.log(rawFeed.title);
+  var blacklisted= feedObj[2];
   
 	var feedElement = $('<div/>',{
 		'class'	: 'panel panel-default single-feed',
@@ -19,14 +17,26 @@ function feed(feedObj, parentElement) {
 					  'html'	: rawFeed.title
 				  }),
           $('<div/>',{
-            'class'  : 'sub-icons',
+            'class'  : 'feed-icons',
             'html'   : [
               $('<span/>',{
-                'class'      : 'glyphicon glyphicon-heart subscribe-icon',
+                'class'      : 'glyphicon glyphicon-heart subscribe-icon sub-icon',
+                'title'      : 'Subscribe to this feed',
                 'aria-hidden': 'true'
               }),
               $('<span/>',{
-                'class'      : 'glyphicon glyphicon-remove unsubscribe-icon',
+                'class'      : 'glyphicon glyphicon-remove unsubscribe-icon sub-icon',
+                'title'      : 'Unsubscribe from this feed',
+                'aria-hidden': 'true'
+              }),
+              $('<span/>',{
+                'class'      : 'glyphicon glyphicon-ban-circle ban-icon blacklist-icon',
+                'title'      : 'Blacklist this feed',
+                'aria-hidden': 'true'
+              }),
+              $('<span/>',{
+                'class'      : 'glyphicon glyphicon-ok-circle unban-icon blacklist-icon',
+                'title'      : 'Un-blacklist this feed',
                 'aria-hidden': 'true'
               })
             ] 
@@ -48,10 +58,18 @@ function feed(feedObj, parentElement) {
 	}).appendTo(anchor);
   
   var subscribeIcon    = feedElement.find('span.subscribe-icon');
-  var unsubscribeIcon  =  feedElement.find('span.unsubscribe-icon');
+  var unsubscribeIcon  = feedElement.find('span.unsubscribe-icon');
+  var banIcon          = feedElement.find('span.ban-icon');
+  var unbanIcon        = feedElement.find('span.unban-icon');
+  
+  // Stops non-admins from seeing icon to blacklist feeds.
+  // Obvious doesn't matter if they could as admin-validation is done server-side
+  if ( !user_is_admin ) {
+    banIcon.hide();
+  }
   
   // Subscribes/unsubscribes user to/from feed when a subscription modifying button is clicked
-  feedElement.on('click','div.sub-icons span', function(e){
+  feedElement.on('click','div.feed-icons span.sub-icon', function(e){
     var subAction = '';
     
     if ($(e.target).hasClass('subscribe-icon')) {
@@ -80,6 +98,30 @@ function feed(feedObj, parentElement) {
     });
   });
   
+  // Blacklisted or unblacklists a feed
+  feedElement.on('click','div.feed-icons span.blacklist-icon', function(e){
+    var blacklistFeed = $(e.target).hasClass('ban-icon');
+    
+    $.ajax({
+      type     : 'POST',
+      url      : '/modify_blacklisted',
+      dataType : 'json',
+      data     : {
+        feed_id  : rawFeed.id,
+        bfeed    : blacklistFeed
+      }
+    }).success(function(data){
+      if ( data ) {
+        // Toggles blacklisted state of feed
+        blacklisted = !blacklisted;
+        
+        toggleBlacklisted();
+      } else {
+        alert('Something went wrong :/');
+      }
+    });
+  });
+  
 	
 	var body = feedElement.find('div.panel-body');
   
@@ -94,6 +136,23 @@ function feed(feedObj, parentElement) {
     } else {
       subscribeIcon.hide();
       unsubscribeIcon.hide();
+    }
+  }
+  
+  // Toggles whether the feed shows as red to admins who can see it, showing that the feed is blacklisted
+  // Also affects which of the blacklist/unblacklist buttons appear
+  function toggleBlacklisted() {
+    feedElement.toggleClass('blacklisted', blacklisted);
+    
+    if (blacklisted == true) {
+      banIcon.hide();
+      unbanIcon.show();
+    } else if ( user_is_admin ) {
+      banIcon.show();
+      unbanIcon.hide();
+    } else {
+      banIcon.hide();
+      unbanIcon.hide();
     }
   }
 	
@@ -138,6 +197,7 @@ function feed(feedObj, parentElement) {
   
 	
   changeDisplayedIcon();
+  toggleBlacklisted();
 	gFeed.load(renderPosts);
 }
 
@@ -153,6 +213,7 @@ function feedEngine(requestType) {
 		parentElement	= $('div.feed-bin');
 		
     user_signed_in = data[0];
+    user_is_admin  = data[2];
     
 		data[1].forEach(function(feedObj,i){
 			feeds.push(new feed(feedObj, parentElement));

@@ -9,7 +9,7 @@ div.feed-bin {
         float: left;
       }
       
-      div.sub-icons {
+      div.feed-icons {
         float: right;
       }
       
@@ -19,6 +19,7 @@ div.feed-bin {
         margin: -2px;
         background-color: #D5D5D5;
         cursor: pointer;
+        margin-left: 5px;
       }
       
       span:active {
@@ -28,6 +29,10 @@ div.feed-bin {
       height: 2.5em;
     }
 	}
+  
+  div.single-feed.blacklisted {
+    background-color: #FFDBDB;
+  }
 }
 
 div.devise-panel {
